@@ -1,0 +1,84 @@
+#root, .App {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #f0f2f5;
+}
+
+.clearfix, .MainLayout .MainHeader {
+  zoom: 1;
+}
+
+.clearfix::after, .MainLayout .MainHeader::after {
+  content: '';
+  display: block;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+
+.MainLayout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.MainLayout .MainHeader {
+  position: fixed;
+  z-index: 1;
+  background: #fff;
+  padding: 0;
+  box-shadow: 0 0px 4px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s;
+  width: calc(100% - 200px);
+}
+
+.MainLayout .MainHeader.sider-collapsed {
+  width: calc(100% - 80px);
+}
+
+.MainLayout .MainHeader .MainHeaderMenu {
+  float: right;
+  line-height: 63px;
+  border: 0;
+}
+
+.MainLayout .MainSider .ant-menu .ant-menu-item:first-child {
+  margin-top: 0;
+}
+
+.MainLayout .MainContent {
+  margin: 64px 16px 0;
+  min-height: auto;
+}
+
+.MainLayout .MainContent .ant-breadcrumb {
+  line-height: 22px;
+  height: 22px;
+}
+
+.MainLayout .MainContent .MainBody {
+  padding: 24px;
+  background: #fff;
+  min-height: calc(100% - 54px);
+}
+
+.MainLayout .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.MainLayout .trigger:hover {
+  color: #1890ff;
+}
+
+.MainLayout .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
