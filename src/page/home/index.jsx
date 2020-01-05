@@ -11,7 +11,7 @@ class Home extends Component {
             id: 3
           }
         })}>通过函数跳转 user</button>
-        <div className="rect"></div>
+        {/* <div className="rect"></div> */}
       </div>
     )
   }

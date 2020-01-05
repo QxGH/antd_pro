@@ -41,8 +41,51 @@ body {
 
 .MainLayout .MainHeader .MainHeaderMenu {
   float: right;
-  line-height: 63px;
+  line-height: 64px;
+  height: 64px;
   border: 0;
+  margin: 0;
+}
+
+.MainLayout .MainHeader .MainHeaderMenu .item {
+  float: left;
+  height: 100%;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.MainLayout .MainHeader .MainHeaderMenu .item:hover {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.MainLayout .MainHeader .MainHeaderMenu .item.no-hover:hover {
+  background: transparent;
+}
+
+.MainLayout .MainHeader .MainHeaderMenu .icon-box {
+  color: rgba(0, 0, 0, 0.65);
+  display: inline-block;
+  height: 100%;
+}
+
+.MainLayout .MainHeader .MainHeaderMenu .name-box {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.MainLayout .MainHeader .MainHeaderMenu .search-box .search-input {
+  width: 0;
+  margin-left: 0;
+  border: 0;
+  outline: 0;
+  height: 34px;
+  border-bottom: 1px solid #d9d9d9;
+  transition: width .3s, margin-left .3s;
+}
+
+.MainLayout .MainHeader .MainHeaderMenu .search-box .search-input.focus {
+  width: 160px;
+  margin-left: 8px;
 }
 
 .MainLayout .MainSider .ant-menu .ant-menu-item:first-child {
@@ -62,7 +105,7 @@ body {
 .MainLayout .MainContent .MainBody {
   padding: 24px;
   background: #fff;
-  min-height: calc(100% - 54px);
+  min-height: calc(100% - 22px);
 }
 
 .MainLayout .trigger {

@@ -34,8 +34,46 @@ body {
     }
     .MainHeaderMenu {
       float: right;
-      line-height: 63px;
+      line-height: 64px;
+      height: 64px;
       border: 0;
+      margin: 0;
+      .item {
+        float: left;
+        height: 100%;
+        padding: 0 12px;
+        cursor: pointer;
+        &:hover {
+          background: rgba(0,0,0,.025);
+        }
+        &.no-hover:hover {
+          background: transparent;
+        }
+      }
+      .icon-box {
+        color: rgba(0,0,0,.65);
+        display: inline-block;
+        height: 100%;
+      }
+      .name-box {
+        vertical-align: middle;
+        margin-left: 5px;
+      }
+      .search-box {
+        .search-input {
+          width: 0;
+          margin-left: 0;
+          border: 0;
+          outline: 0;
+          height: 34px;
+          border-bottom: 1px solid rgb(217,217,217);
+          transition: width .3s, margin-left .3s;
+          &.focus {
+            width: 160px;
+            margin-left: 8px;
+          }
+        }
+      }
     }
   }
   .MainSider {
@@ -57,7 +95,7 @@ body {
     .MainBody {
       padding: 24px;
       background: #fff;
-      min-height: calc(100% - 54px);
+      min-height: calc(100% - 22px);
     }
   }
   .trigger {

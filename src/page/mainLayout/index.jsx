@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Route } from "react-router-dom";
 import Home from '../home';
 import User from '../user';
+import UploadImage from '../uploadImage';
+
 
 import './scss/index.min.css';
 
@@ -16,6 +18,7 @@ const {  Content } = Layout
 class MainLayout extends Component {
 	state = {
 		collapsed: false,
+		breadcrumb: ['Home']
 	};
 
 	onMenuToggle = () => {
@@ -24,22 +27,48 @@ class MainLayout extends Component {
 		});
 	};
 
+	componentDidMount(){
+		this.props.history.listen((e)=>{
+			console.log(e.pathname)
+			let path = e.pathname;
+			if(path === '/user') {
+				this.setState({
+					breadcrumb: ['User']
+				})
+			} else if(path === '/uploadImage') {
+				this.setState({
+					breadcrumb: ['UploadImage']
+				})
+			} else {
+				this.setState({
+					breadcrumb: ['Home']
+				})
+			}
+		})
+	}
+
 	render() {
 		return (
 			<div className="MainLayout">
 				<Layout>
-					<MainSider collapsed={this.state.collapsed} />
+					<MainSider collapsed={this.state.collapsed} history={this.props.history}/>
 					<Layout>
 						<MainHeader collapsed={this.state.collapsed} setParentState={this.onMenuToggle}/>
 						<Content className="MainContent">
 							<Breadcrumb style={{ margin: '16px 0' }}>
-								<Breadcrumb.Item>User</Breadcrumb.Item>
-								<Breadcrumb.Item>Bill</Breadcrumb.Item>
+								{
+									this.state.breadcrumb.map((item, index) => {
+										return (
+										<Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>
+										)
+									})
+								}
 							</Breadcrumb>
 							<div className="MainBody">
 								{/* Content Router Start */}
 								<Route exact path="/" component={Home} />
 								<Route path="/user" component={User} />
+								<Route path="/uploadImage" component={UploadImage} />
 								{/* Content Router End */}
 							</div>
 						</Content>
