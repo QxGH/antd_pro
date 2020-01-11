@@ -4,6 +4,9 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 
+import http from './api/index';
+
+React.Component.prototype.$http = http;
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

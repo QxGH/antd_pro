@@ -66,7 +66,7 @@ class UploadImage extends Component {
 		this.setState({ loading: true });
 		api.common.getQiniuToken()
 		.then(res => {
-			if(res.data.code == 0) {
+			if(res.data.code === 0) {
 				this.uploadImageHandle(res.data.data, file)
 			} else {
 				message.error('获取七牛云 Token 失败！');

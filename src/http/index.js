@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { message } from 'antd';
+import { createHashHistory } from 'history'; // 如果是hash路由
+const history = createHashHistory();
 
 let instance = axios.create({
   timeout: 1000 * 20
@@ -13,11 +15,10 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 
 instance.interceptors.request.use(
   config => {
-    let xc_H5_user_info = JSON.parse(localStorage.getItem("xc_H5_user_info"));
-    if (xc_H5_user_info) {
-      // config.headers.Authorization = 'Bearer ' + xc_H5_user_info.token;
-      config.headers.TOKEN = xc_H5_user_info.token;
-      config.headers.APPID = localStorage.getItem("xc_H5_appid")
+    let token = localStorage.getItem("token");
+    let Authorization = 'Bearer ' + token
+    if (token) {
+      config.headers.Authorization = Authorization;
     };
     return config;
   },
@@ -26,7 +27,19 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   // 请求成功
-  res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+  res => {
+    // console.log(res)
+    if(res.status === 200) {
+      if(res.data.code === 401) {
+        message.error('用户信息验证失败！');
+        history.push('/login');
+      } else {
+        return Promise.resolve(res)
+      }
+    } else {
+      return Promise.reject(res)
+    }
+  },
   // 请求失败
   error => {
     message.error('服务器错误！');

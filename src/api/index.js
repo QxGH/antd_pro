@@ -3,9 +3,12 @@
  */
 import home from './home';
 import common from './common';
+import login from './login';
+
 
 // 导出接口
 export default {    
   home,
-  common
+  common,
+  login
 };

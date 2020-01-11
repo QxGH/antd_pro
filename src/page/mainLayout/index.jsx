@@ -29,7 +29,6 @@ class MainLayout extends Component {
 
 	componentDidMount(){
 		this.props.history.listen((e)=>{
-			console.log(e.pathname)
 			let path = e.pathname;
 			if(path === '/user') {
 				this.setState({
@@ -51,9 +50,9 @@ class MainLayout extends Component {
 		return (
 			<div className="MainLayout">
 				<Layout>
-					<MainSider collapsed={this.state.collapsed} history={this.props.history}/>
+					<MainSider collapsed={this.state.collapsed} history={this.props.history} />
 					<Layout>
-						<MainHeader collapsed={this.state.collapsed} setParentState={this.onMenuToggle}/>
+						<MainHeader collapsed={this.state.collapsed} setParentState={this.onMenuToggle} history={this.props.history} />
 						<Content className="MainContent">
 							<Breadcrumb style={{ margin: '16px 0' }}>
 								{

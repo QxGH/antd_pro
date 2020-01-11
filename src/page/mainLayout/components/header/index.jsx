@@ -65,7 +65,7 @@ class MainHeader extends Component {
           个人设置
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item>
+        <Menu.Item onClick={this.logout.bind(this)}>
           <Icon type="logout" />
           退出登录
         </Menu.Item>
@@ -120,6 +120,15 @@ class MainHeader extends Component {
   // componentWillUnmount() {
   //   document.removeEventListener('keyup', this.onkeydown.bind(this))
   // }
+
+  // 退出登录
+  logout(){
+    console.log()
+    localStorage.removeItem("token");
+    this.props.history.push({
+      pathname: '/login'
+    })
+  }
   
 }
 

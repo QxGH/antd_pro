@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import './scss/index.min.css'
 
 class Home extends Component {
+
+  componentWillMount(){
+    this.$http.home.index()
+    .then(res => {
+      console.log(res)
+    })
+  }
+
   render() {
     return (
       <div className="home">
@@ -15,6 +23,7 @@ class Home extends Component {
       </div>
     )
   }
+
 };
 
 export default Home;
