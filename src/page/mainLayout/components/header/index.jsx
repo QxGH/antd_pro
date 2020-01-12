@@ -95,7 +95,7 @@ class MainHeader extends Component {
           </li>
           <li className="item">
             <Tooltip placement="bottom" title="使用文档">
-              <a target="_blank" className="icon-box" rel="noopener noreferrer" href="https://ant.design/index-cn">
+              <a target="_blank" className="icon-box" rel="noopener noreferrer" href="javascript:;">
                 <Icon type="question-circle" />
               </a>
             </Tooltip>

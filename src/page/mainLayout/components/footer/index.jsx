@@ -6,7 +6,7 @@ const { Footer } = Layout
 class MainFooter extends Component {
   render() {
     return (
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+      <Footer style={{ textAlign: 'center' }}>Qinxus ©2020 Power by Ant Design</Footer>
     )
   }
 }
