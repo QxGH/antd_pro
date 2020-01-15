@@ -3,7 +3,7 @@ import './scss/index.min.css'
 
 class Home extends Component {
 
-  componentWillMount(){
+  componentDidMount(){
     this.$http.home.index()
     .then(res => {
       console.log(res)

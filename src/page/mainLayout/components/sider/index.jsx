@@ -28,8 +28,8 @@ class MainSider extends Component {
               </span>
             }
           >
-            <Menu.Item key="uploadImage" onClick={this.routeTo.bind(this, '/uploadImage')}>Upload Image</Menu.Item> 
-            <Menu.Item key="uploadFile">Upload File</Menu.Item>
+            <Menu.Item key="qiniu" onClick={this.routeTo.bind(this, '/qiniu')} >Qiniu</Menu.Item>
+            <Menu.Item key="uploadImage" onClick={this.routeTo.bind(this, '/uploadImage')} >Upload Image</Menu.Item> 
           </SubMenu>
           <Menu.Item key="user" onClick={this.routeTo.bind(this, '/user')}>
             <Icon type="user" />

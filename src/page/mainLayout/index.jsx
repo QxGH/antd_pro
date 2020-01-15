@@ -3,6 +3,8 @@ import { Route } from "react-router-dom";
 import Home from '../home';
 import User from '../user';
 import UploadImage from '../uploadImage';
+import Qiniu from '../qiniu';
+
 
 
 import './scss/index.min.css';
@@ -12,7 +14,7 @@ import MainHeader from './components/header'
 import MainFooter from './components/footer'
 
 import { Layout, Breadcrumb } from 'antd'
-const {  Content } = Layout
+const { Content } = Layout
 
 
 class MainLayout extends Component {
@@ -27,21 +29,29 @@ class MainLayout extends Component {
 		});
 	};
 
-	componentDidMount(){
-		this.props.history.listen((e)=>{
+	componentDidMount() {
+		this.props.history.listen((e) => {
 			let path = e.pathname;
-			if(path === '/user') {
-				this.setState({
-					breadcrumb: ['User']
-				})
-			} else if(path === '/uploadImage') {
-				this.setState({
-					breadcrumb: ['UploadImage']
-				})
-			} else {
-				this.setState({
-					breadcrumb: ['Home']
-				})
+			switch (path) {
+				case '/user':
+					this.setState({
+						breadcrumb: ['User']
+					});
+					break;
+				case '/uploadImage':
+					this.setState({
+						breadcrumb: ['UploadImage']
+					});
+					break;
+				case '/qiniu':
+					this.setState({
+						breadcrumb: ['Qiniu']
+					});
+					break;	
+				default:
+					this.setState({
+						breadcrumb: ['Home']
+					});
 			}
 		})
 	}
@@ -58,7 +68,7 @@ class MainLayout extends Component {
 								{
 									this.state.breadcrumb.map((item, index) => {
 										return (
-										<Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>
+											<Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>
 										)
 									})
 								}
@@ -68,6 +78,7 @@ class MainLayout extends Component {
 								<Route exact path="/" component={Home} />
 								<Route path="/user" component={User} />
 								<Route path="/uploadImage" component={UploadImage} />
+								<Route path="/qiniu" component={Qiniu} />
 								{/* Content Router End */}
 							</div>
 						</Content>

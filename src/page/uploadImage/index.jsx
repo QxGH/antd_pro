@@ -64,7 +64,7 @@ class UploadImage extends Component {
 
 	getQiniuToken(file) {
 		this.setState({ loading: true });
-		api.common.getQiniuToken()
+		api.qiniu.getQiniuToken()
 		.then(res => {
 			if(res.data.code === 0) {
 				this.uploadImageHandle(res.data.data, file)
@@ -91,7 +91,7 @@ class UploadImage extends Component {
 		formData.append('file', file);
 		formData.append('token', token);
 		formData.append('key', keyname);
-		api.common.qiniuUploadFile(formData)
+		api.qiniu.qiniuUploadFile(formData)
 		.then(res => {
 			let imageUrl = `${base.static}${res.data.key}`
 			this.setState({
