@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { message, Table, Button, Popover, Icon } from 'antd';
+import { message, Table, Button, Popover, Icon, Spin } from 'antd';
 import clipboard from 'copy-to-clipboard';
 import api from "../../api/";
 import base from "../../http/base"
@@ -128,14 +128,30 @@ class Qiniu extends Component {
 			}
 		];
 
+		const BottomLoad = () => {
+			const loading = this.state.loading;
+			if(loading) {
+				return (
+					<Spin />
+				)
+			} else {
+				return (
+					<Button type="primary" shape="round" ghost onClick={this.loadingMore.bind(this)} >加载更多</Button>
+				)
+			}
+		}
+		
+
 		return (
 			<div>
 				<Table
 					dataSource={this.state.list}
 					columns={columns}
-					loading={this.state.loading}
 					pagination={false}
 				/>
+				<div className="spin-box"> 
+					<BottomLoad />
+				</div>
 			</div>
 		)
 	}
@@ -187,6 +203,10 @@ class Qiniu extends Component {
 		} else {
 			message.error("复制失败");
 		}
+	}
+
+	loadingMore() {
+		
 	}
 
 };

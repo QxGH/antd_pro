@@ -16,6 +16,11 @@
   bottom: 0;
 }
 
-.text-center {
+.text-center, .spin-box {
   text-align: center;
+}
+
+.spin-box {
+  padding: 16px;
+  border-bottom: 1px solid #e8e8e8;
 }

@@ -117,10 +117,6 @@ class MainHeader extends Component {
     // document.addEventListener('keyup', this.onkeydown.bind(this));
   }
 
-  // componentWillUnmount() {
-  //   document.removeEventListener('keyup', this.onkeydown.bind(this))
-  // }
-
   // 退出登录
   logout(){
     console.log()

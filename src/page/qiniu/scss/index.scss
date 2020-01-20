@@ -19,3 +19,9 @@
 .text-center {
   text-align: center;
 }
+
+.spin-box {
+  @extend .text-center;
+  padding: 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
