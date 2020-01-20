@@ -10,7 +10,7 @@ const common = {
     return axios.post(`${base.qiniu}`, data, {headers:{'Content-Type':'multipart/form-data'}});
   },
   getQiniuList(data) {
-    return axios.post(`${base.request}qiniu/getList`);
+    return axios.post(`${base.request}qiniu/getList`, data);
   }
 }
 

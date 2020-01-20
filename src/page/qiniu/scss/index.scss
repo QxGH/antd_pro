@@ -25,3 +25,28 @@
   padding: 16px;
   border-bottom: 1px solid #e8e8e8;
 }
+
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+.clearfix {
+  &::after {
+    content: '';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+.list-opt-btn {
+  .btn {
+    margin-right: 8px;
+    margin-bottom: 12px;
+    &:last-child {
+      margin: 0;
+    }
+  }
+}

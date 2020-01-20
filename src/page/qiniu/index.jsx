@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { message, Table, Button, Popover, Icon, Spin } from 'antd';
+import { message, Table, Button, Popover, Icon, Spin, Input, Drawer, Upload } from 'antd';
 import clipboard from 'copy-to-clipboard';
 import api from "../../api/";
 import base from "../../http/base"
 
 import "./scss/index.min.css"
+
+const { Search } = Input;
+const { Dragger } = Upload;
 
 class Qiniu extends Component {
 	constructor(props) {
@@ -12,12 +15,14 @@ class Qiniu extends Component {
 		this.state = {
 			loading: false,
 			marker: '',
-			list: []
+			prefix: '',	// 前缀
+			list: [],
+			DrawShow: false
 		};
 	}
 
 	componentDidMount() {
-		this.index()
+		this.getList()
 	}
 
 	render() {
@@ -139,26 +144,73 @@ class Qiniu extends Component {
 					<Button type="primary" shape="round" ghost onClick={this.loadingMore.bind(this)} >加载更多</Button>
 				)
 			}
-		}
-		
+		};
 
 		return (
 			<div>
+				<div className="list-opt-btn clearfix">
+					<div className="pull-left">
+						<Button className="btn" type="primary" onClick={this.drawOpen.bind(this)} >上传文件</Button>
+						<Button className="btn" onClick={this.refresh.bind(this)}>刷新列表</Button>
+					</div>
+					<div className="pull-right">
+					<Search
+						placeholder="文件前缀"
+						onSearch={this.search.bind(this)}
+						style={{ width: 300 }}
+					/>
+					</div>
+				</div>
+				
 				<Table
 					dataSource={this.state.list}
 					columns={columns}
 					pagination={false}
 				/>
+				{/* bottom loading start */}
 				<div className="spin-box"> 
 					<BottomLoad />
 				</div>
+				{/* bottom loading end */}
+				{/* 抽屉 start */}
+				<Drawer
+          title="Upload"
+          placement="bottom"
+          closable={true}
+          onClose={this.drawClose.bind(this)}
+					visible={this.state.DrawShow}
+					height="300"
+        >
+					<Dragger 
+						multiple
+						name="file"
+						beforeUpload={this.beforeUpload.bind(this)}
+					>
+						<p className="ant-upload-drag-icon">
+							<Icon type="inbox" />
+						</p>
+						<p className="ant-upload-text">Click or drag file to this area to upload</p>
+						<p className="ant-upload-hint">
+							Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+							band files
+						</p>
+					</Dragger>
+        </Drawer>
+				{/* 抽屉 end */}
 			</div>
 		)
 	}
 
-	index() {
+	getList(page) {
 		this.setState({ loading: true });
-		api.qiniu.getQiniuList()
+		let formData = {
+			prefix: '',
+			marker: ''
+		};
+		if(this.state.marker && page !== 1) {
+			formData.marker = this.state.marker
+		};
+		api.qiniu.getQiniuList(formData)
 			.then(res => {
 				if (res.data.code === 0) {
 					let resData = res.data.data;
@@ -206,7 +258,99 @@ class Qiniu extends Component {
 	}
 
 	loadingMore() {
-		
+		this.getList()
+	}
+
+	search(val) {
+		console.log(val)
+		this.setState({
+			marker: '',
+			prefix: val
+		});
+		this.getList(1);
+	}
+
+	refresh(){
+		this.setState({
+			marker: ''
+		});
+		this.getList(1);
+	}
+
+	drawClose(){
+		this.setState({
+      DrawShow: false
+		});
+		console.log('drawClose');
+	}
+
+	drawOpen(){
+		this.setState({
+      DrawShow: true
+    });
+	}
+
+	beforeUpload(file) {
+		const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+		if (!isJpgOrPng) {
+			message.error('You can only upload JPG/PNG file!');
+			return;
+		}
+		const isLt2M = file.size / 1024 / 1024 < 2;
+		if (!isLt2M) {
+			message.error('Image must smaller than 2MB!');
+			return;
+		}
+
+		// return isJpgOrPng && isLt2M;
+		this.getQiniuToken(file);
+		return false;
+	};
+
+	getQiniuToken(file) {
+		this.setState({ loading: true });
+		api.qiniu.getQiniuToken()
+		.then(res => {
+			if(res.data.code === 0) {
+				this.uploadImageHandle(res.data.data, file)
+			} else {
+				message.error('获取七牛云 Token 失败！');
+				this.setState({ loading: false });
+			}
+		})
+		.catch(err => {
+			this.setState({ loading: false });
+			console.log(err)
+		})
+	}
+
+	uploadImageHandle(token, file) {
+		console.log(token);
+		console.log(file)
+		const fileType = file.type.split('/')[1];
+		let timestamp = Date.parse(new Date())
+    let randomNum = Math.floor(Math.random() * 1000)
+    // 文件名
+		const keyname = `temp/${timestamp}${randomNum}.${fileType}`
+		let formData = new FormData();
+		formData.append('file', file);
+		formData.append('token', token);
+		formData.append('key', keyname);
+		api.qiniu.qiniuUploadFile(formData)
+		.then(res => {
+			// let imageUrl = `${base.static}${res.data.key}`
+			// this.setState({
+			// 	imageUrl,
+			// 	loading: false,
+			// })
+			message.success('上传成功');
+		})
+		.catch(err => {
+			console.log(err)
+			// this.setState({ loading: false });
+			message.error('上传失败');
+
+		})
 	}
 
 };
