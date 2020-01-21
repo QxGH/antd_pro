@@ -63,14 +63,18 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        const code = String(Math.floor(Math.random()*10000)); // 四位随机数
+        let password = values.password;
+        let md5_password = hex_hmac_md5(values.username, password);
+        let md5_code_password = hex_hmac_md5(md5_password, code);
         let data = {
           username: values.username,
-          password: hex_hmac_md5(values.username, values.password) 
+          password: md5_code_password,
+          code: code
         };
         this.$http.login.login(data)
         .then(res => {
           if(res.data.code === 0) {
-            console.log(res)
             localStorage.setItem('token', res.data.data.token);
             this.props.history.push({
               pathname: '/'

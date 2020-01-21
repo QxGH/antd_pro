@@ -80,8 +80,6 @@ class UploadImage extends Component {
 	}
 
 	uploadImageHandle(token, file) {
-		console.log(token);
-		console.log(file)
 		const fileType = file.type.split('/')[1];
 		let timestamp = Date.parse(new Date())
     let randomNum = Math.floor(Math.random() * 1000)

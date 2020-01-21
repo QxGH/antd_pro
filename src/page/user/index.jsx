@@ -16,9 +16,6 @@ class User extends Component {
 			</div>
 		)
 	}
-	componentDidMount() {
-		console.log(this.props.history.location.state)
-	}
 };
 
 export default User;

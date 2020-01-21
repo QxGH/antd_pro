@@ -22,7 +22,7 @@ class Qiniu extends Component {
 	}
 
 	componentDidMount() {
-		this.getList()
+		this.getList(1)
 	}
 
 	render() {
@@ -134,14 +134,19 @@ class Qiniu extends Component {
 		];
 
 		const BottomLoad = () => {
-			const loading = this.state.loading;
-			if(loading) {
+			let loading = this.state.loading;
+			let marker = this.state.marker;
+			if(loading && marker) {
 				return (
 					<Spin />
 				)
-			} else {
+			} else if(!loading && marker) {
 				return (
 					<Button type="primary" shape="round" ghost onClick={this.loadingMore.bind(this)} >加载更多</Button>
+				)
+			} else {
+				return (
+					<div>没有更多了~</div>
 				)
 			}
 		};
@@ -166,6 +171,7 @@ class Qiniu extends Component {
 					dataSource={this.state.list}
 					columns={columns}
 					pagination={false}
+					rowClassName={this.setRowClass}
 				/>
 				{/* bottom loading start */}
 				<div className="spin-box"> 
@@ -179,7 +185,6 @@ class Qiniu extends Component {
           closable={true}
           onClose={this.drawClose.bind(this)}
 					visible={this.state.DrawShow}
-					height="300"
         >
 					<Dragger 
 						multiple
@@ -201,7 +206,7 @@ class Qiniu extends Component {
 		)
 	}
 
-	getList(page) {
+	getList(page, type='') {
 		this.setState({ loading: true });
 		let formData = {
 			prefix: '',
@@ -210,16 +215,32 @@ class Qiniu extends Component {
 		if(this.state.marker && page !== 1) {
 			formData.marker = this.state.marker
 		};
+		if(this.state.prefix) {
+			formData.prefix = this.state.prefix
+		};
 		api.qiniu.getQiniuList(formData)
 			.then(res => {
 				if (res.data.code === 0) {
 					let resData = res.data.data;
+					let list = resData.items;
+					if(page !== 1) {
+						list = [...this.state.list, ...resData.items];
+					};
+					let marker = '';
+					if(resData.marker) {
+						marker = resData.marker
+					}
 					this.setState({
-						list: resData.items,
-						marker: resData.marker
+						list: list,
+						marker: marker
 					});
+					message.success('加载成功！');
 				} else {
-					message.error('获取七牛云 Token 失败！');
+					message.error('加载失败！');
+					this.setState({
+						list: [],
+						marker: ''
+					});
 				};
 				this.setState({ loading: false });
 			})
@@ -266,15 +287,16 @@ class Qiniu extends Component {
 		this.setState({
 			marker: '',
 			prefix: val
-		});
-		this.getList(1);
+		},() => {
+			this.getList(1);
+	 });
 	}
 
 	refresh(){
 		this.setState({
 			marker: ''
 		});
-		this.getList(1);
+		this.getList(1, 'refresh');
 	}
 
 	drawClose(){
@@ -325,8 +347,8 @@ class Qiniu extends Component {
 	}
 
 	uploadImageHandle(token, file) {
-		console.log(token);
-		console.log(file)
+		// console.log(token);
+		// console.log(file)
 		const fileType = file.type.split('/')[1];
 		let timestamp = Date.parse(new Date())
     let randomNum = Math.floor(Math.random() * 1000)
@@ -343,6 +365,23 @@ class Qiniu extends Component {
 			// 	imageUrl,
 			// 	loading: false,
 			// })
+
+			let obj = {
+				key: res.data.key,
+				hash: res.data.hash,
+				fsize: file.size,
+				mimeType: file.type,
+				putTime: new Date().getTime(),
+				type: 0,
+				status: 0,
+				md5: '',
+				uploadType: 'new'
+			};
+			let list = this.state.list;
+			this.setState({
+				list: [obj, ...list],
+				DrawShow: false
+			});
 			message.success('上传成功');
 		})
 		.catch(err => {
@@ -351,6 +390,10 @@ class Qiniu extends Component {
 			message.error('上传失败');
 
 		})
+	}
+
+	setRowClass(record, index){
+		return ( record.uploadType === 'new' ? 'success-row' : '')
 	}
 
 };

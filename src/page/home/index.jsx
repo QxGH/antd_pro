@@ -4,7 +4,11 @@ import './scss/index.min.css'
 class Home extends Component {
 
   componentDidMount(){
-    this.$http.home.index()
+    let time = new Date().getTime();
+    let data = {
+      startTime: time
+    }
+    this.$http.home.index(data)
     .then(res => {
       console.log(res)
     })

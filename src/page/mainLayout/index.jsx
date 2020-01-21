@@ -30,30 +30,28 @@ class MainLayout extends Component {
 	};
 
 	componentDidMount() {
-		this.props.history.listen((e) => {
-			let path = e.pathname;
-			switch (path) {
-				case '/user':
-					this.setState({
-						breadcrumb: ['User']
-					});
-					break;
-				case '/uploadImage':
-					this.setState({
-						breadcrumb: ['UploadImage']
-					});
-					break;
-				case '/qiniu':
-					this.setState({
-						breadcrumb: ['Qiniu']
-					});
-					break;	
-				default:
-					this.setState({
-						breadcrumb: ['Home']
-					});
-			}
-		})
+		let path = this.props.history.location.pathname;
+		switch (path) {
+			case '/user':
+				this.setState({
+					breadcrumb: ['User']
+				});
+				break;
+			case '/uploadImage':
+				this.setState({
+					breadcrumb: ['UploadImage']
+				});
+				break;
+			case '/qiniu':
+				this.setState({
+					breadcrumb: ['Qiniu']
+				});
+				break;	
+			default:
+				this.setState({
+					breadcrumb: ['Home']
+				});
+		}
 	}
 
 	render() {
@@ -65,13 +63,14 @@ class MainLayout extends Component {
 						<MainHeader collapsed={this.state.collapsed} setParentState={this.onMenuToggle} history={this.props.history} />
 						<Content className="MainContent">
 							<Breadcrumb style={{ margin: '16px 0' }}>
-								{
+								{/* {
 									this.state.breadcrumb.map((item, index) => {
 										return (
 											<Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>
 										)
 									})
-								}
+								} */}
+								<Breadcrumb.Item >{this.props.history.location.pathname}</Breadcrumb.Item>
 							</Breadcrumb>
 							<div className="MainBody">
 								{/* Content Router Start */}

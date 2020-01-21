@@ -49,3 +49,7 @@
 .list-opt-btn .btn:last-child {
   margin: 0;
 }
+
+.success-row {
+  background: #f0f9eb;
+}
